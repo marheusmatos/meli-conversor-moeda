@@ -106,11 +106,7 @@ def atualizar_taxas() -> list[dict]:
         raise HTTPException(
             502, 'API de câmbio indisponível. Tente novamente mais tarde.'
         ) from erro
-    novas = {
-        m: str(cotacoes[m])
-        for m in repository.moedas()
-        if m != 'USD' and m in cotacoes
-    }
+    novas = {m: str(cotacoes[m]) for m in repository.moedas() if m in cotacoes}
     if novas:
         repository.salvar_taxas(novas)
     return listar_taxas()

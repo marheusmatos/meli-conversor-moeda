@@ -23,7 +23,7 @@ def adicionar_moeda(codigo: str) -> None:
 
 
 def taxas() -> dict[str, str]:
-    return {'USD': '1'} | r.hgetall(TAXAS)
+    return r.hgetall(TAXAS)
 
 
 def datas() -> dict[str, str]:

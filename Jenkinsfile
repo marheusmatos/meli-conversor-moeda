@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME     = 'meli'
-        CONTAINER_NAME = 'meli'
+        IMAGE_NAME     = 'meli-dev'
+        CONTAINER_NAME = 'meli-dev'
         HOST_PORT      = '5500'
         CONTAINER_PORT = '8000'
     }

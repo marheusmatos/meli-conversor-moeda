@@ -56,7 +56,7 @@ Conclusões:
 | Entidade | Campos | Regras |
 |---|---|---|
 | **Moeda** | `codigo` | 3 letras, sempre em maiúsculas (`brl` vira `BRL`). Suportadas = `USD`, `BRL` e `ARS` + as adicionadas pela API |
-| **Taxa** | `moeda`, `valor`, `atualizada_em` | `valor` é quanto vale 1 USD e deve ser maior que zero. USD é a base: vale sempre 1, mesmo sem cadastro, e só aceita o valor 1 |
+| **Taxa** | `moeda`, `valor`, `atualizada_em` | `valor` é quanto vale 1 USD e deve ser maior que zero. As taxas ficam só no Redis, inclusive a do USD, que é a base e só aceita o valor 1 |
 | **Conversão** | `valor`, `moeda_origem`, `moeda_destino`, `convertido` | Guardada no histórico com exatamente esses 4 campos |
 
 Modelo no Redis:

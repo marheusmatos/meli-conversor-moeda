@@ -56,6 +56,9 @@ Fórmula: `valor convertido = valor ÷ taxa da origem × taxa do destino`, arred
 ### Exemplos
 
 ```bash
+curl -X POST http://localhost:8000/taxas/USD/1
+# 201 {"moeda":"USD","valor":1,"atualizada_em":"2026-10-11T15:45:35+00:00","mensagem":"Taxa salva: 1 USD = 1 USD."}
+
 curl -X POST http://localhost:8000/taxas/BRL/5
 # 201 {"moeda":"BRL","valor":5,"atualizada_em":"2026-10-11T15:45:35+00:00","mensagem":"Taxa salva: 1 USD = 5 BRL."}
 
@@ -95,7 +98,7 @@ curl http://localhost:8000/converter/100/BRL/EUR
 # 404 {"detail":"Moeda sem taxa cadastrada: EUR."}
 ```
 
-O USD é a base: vale sempre 1, mesmo sem cadastro, e `POST /taxas/USD/{valor}` só aceita o valor 1.
+As taxas ficam só no Redis; nenhuma vem no código. Em um ambiente novo, cadastre USD, BRL e ARS antes de converter. O USD é a base, então `POST /taxas/USD/{valor}` só aceita o valor 1.
 
 ## Variáveis de ambiente
 

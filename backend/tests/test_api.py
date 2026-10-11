@@ -7,6 +7,7 @@ from app import repository, services
 
 
 def cadastrar_taxas(client):
+    client.post('/taxas/USD/1')
     client.post('/taxas/BRL/5')
     client.post('/taxas/ARS/700')
 
@@ -23,7 +24,7 @@ def test_salvar_taxa_atualiza_existente(client):
     client.post('/taxas/ARS/700')
     assert client.post('/taxas/ARS/750.5').status_code == 201
     taxas = {t['moeda']: t['valor'] for t in client.get('/taxas').json()}
-    assert taxas == {'ARS': 750.5, 'BRL': None, 'USD': 1}
+    assert taxas == {'ARS': 750.5, 'BRL': None, 'USD': None}
 
 
 @pytest.mark.parametrize(
