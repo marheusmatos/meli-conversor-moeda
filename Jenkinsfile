@@ -6,7 +6,6 @@ pipeline {
         CONTAINER_NAME = 'meli'
         HOST_PORT      = '5500'
         CONTAINER_PORT = '8000'
-        BASE_PATH      = '/meli'
     }
 
     stages {
@@ -18,21 +17,29 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh '''
-                    set -e
+                withCredentials([
+                    file(credentialsId: 'meli-env', variable: 'ENV_FILE')
+                ]) {
+                    sh '''
+                        set -e
 
-                    # Remove o container anterior, se existir
-                    docker stop "$CONTAINER_NAME" || true
-                    docker rm "$CONTAINER_NAME" || true
+                        docker stop "$CONTAINER_NAME" || true
+                        docker rm "$CONTAINER_NAME" || true
 
-                    # Sobe o novo container
-                    docker run -d \
-                        -p 127.0.0.1:$HOST_PORT:$CONTAINER_PORT \
-                        -e BASE_PATH="$BASE_PATH" \
-                        --name "$CONTAINER_NAME" \
-                        --restart unless-stopped \
-                        "$IMAGE_NAME"
-                '''
+                        case "${BRANCH_NAME:-$GIT_BRANCH}" in
+                            *develop) RATE_LIMIT_ENABLED=false ;;
+                            *) RATE_LIMIT_ENABLED=true ;;
+                        esac
+
+                        docker run -d \
+                            -p 127.0.0.1:$HOST_PORT:$CONTAINER_PORT \
+                            --env-file "$ENV_FILE" \
+                            -e RATE_LIMIT_ENABLED="$RATE_LIMIT_ENABLED" \
+                            --name "$CONTAINER_NAME" \
+                            --restart unless-stopped \
+                            "$IMAGE_NAME"
+                    '''
+                }
             }
         }
     }
