@@ -1,0 +1,21 @@
+[project]
+name = "meli-conversor-moeda"
+version = "0.1.0"
+description = "API do conversor de moeda"
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+preview = true
+select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
+
+[tool.taskipy.tasks]
+lint = 'ruff check'
+lint_fix = 'ruff check --fix'
+format = 'ruff format'
+run = 'uvicorn app.main:app --reload'

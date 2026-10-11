@@ -1,0 +1,17 @@
+# Segredos
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ruff_cache/
+
+# SO / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
