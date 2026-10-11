@@ -35,6 +35,7 @@ pipeline {
                             -p 127.0.0.1:$HOST_PORT:$CONTAINER_PORT \
                             --env-file "$ENV_FILE" \
                             -e RATE_LIMIT_ENABLED="$RATE_LIMIT_ENABLED" \
+                            -e BASE_PATH=/meli/api \
                             --name "$CONTAINER_NAME" \
                             --restart unless-stopped \
                             "$IMAGE_NAME"

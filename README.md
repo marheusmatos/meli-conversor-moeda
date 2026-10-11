@@ -112,7 +112,7 @@ Tudo é lido do `.env` na raiz, que não é versionado. Não use aspas nos valor
 | `RATE_LIMIT_ENABLED` | `true` | `false` desliga o rate limit |
 | `RATE_LIMIT_REQUESTS` | `100` | Requisições permitidas por IP dentro da janela |
 | `RATE_LIMIT_WINDOW` | `60` | Tamanho da janela, em segundos |
-| `BASE_PATH` | vazio | Prefixo quando roda atrás de proxy (ex.: `/meli`) |
+| `BASE_PATH` | vazio | Prefixo quando roda atrás de proxy (ex.: `/meli/api`) |
 
 Com a atualização automática ligada, as taxas cadastradas à mão são sobrescritas pelo câmbio real a cada intervalo.
 
@@ -141,7 +141,7 @@ backend/
 
 ## Deploy
 
-O `Jenkinsfile` faz o build da imagem e sobe o container em `127.0.0.1:5500`. As variáveis de produção vêm de uma credencial do Jenkins do tipo *Secret file* com o id `meli-env`, que é o `.env` de produção (com `REDIS_URL`, `CORS_ORIGINS` e `BASE_PATH=/meli`).
+O `Jenkinsfile` faz o build da imagem e sobe o container em `127.0.0.1:5500`. As variáveis de produção vêm de uma credencial do Jenkins do tipo *Secret file* com o id `meli-env`, que é o `.env` de produção (com `REDIS_URL`, `CORS_ORIGINS` e `BASE_PATH=/meli/api`).
 
 Na branch `develop` o pipeline sobe o container com `RATE_LIMIT_ENABLED=false`, usando a mesma credencial.
 
