@@ -17,28 +17,18 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                withCredentials([
-                    file(credentialsId: 'meli-env', variable: 'ENV_FILE')
-                ]) {
+                withCredentials([file(credentialsId: 'meli-env', variable: 'ENV_FILE')]) {
                     sh '''
                         set -e
+                        docker rm -f "$CONTAINER_NAME" || true
 
-                        docker stop "$CONTAINER_NAME" || true
-                        docker rm "$CONTAINER_NAME" || true
+                        RUN="docker run -d --restart unless-stopped --env-file $ENV_FILE --add-host host.docker.internal:host-gateway -v meli-dev-data:/app/data --name $CONTAINER_NAME"
 
                         case "${BRANCH_NAME:-$GIT_BRANCH}" in
-                            *develop) RATE_LIMIT_ENABLED=false ;;
-                            *) RATE_LIMIT_ENABLED=true ;;
+                            *develop) RUN="$RUN -e RATE_LIMIT__HABILITADO=false" ;;
                         esac
 
-                        docker run -d \
-                            -p 127.0.0.1:$HOST_PORT:$CONTAINER_PORT \
-                            --env-file "$ENV_FILE" \
-                            -e RATE_LIMIT_ENABLED="$RATE_LIMIT_ENABLED" \
-                            -e BASE_PATH=/meli/api \
-                            --name "$CONTAINER_NAME" \
-                            --restart unless-stopped \
-                            "$IMAGE_NAME"
+                        $RUN -p 127.0.0.1:$HOST_PORT:$CONTAINER_PORT -e API__ROOT_PATH=/meli/api "$IMAGE_NAME"
                     '''
                 }
             }
@@ -46,12 +36,7 @@ pipeline {
     }
 
     post {
-        failure {
-            echo 'Deploy falhou'
-        }
-
-        success {
-            echo 'Deploy concluído com sucesso.'
-        }
+        failure { echo 'Deploy falhou' }
+        success { echo 'Deploy concluído com sucesso.' }
     }
 }

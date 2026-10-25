@@ -16,4 +16,5 @@ jobs:
       - run: pip install -r requirements-dev.txt
       - run: ruff check .
       - run: ruff format --check .
-      - run: pytest
+      - run: python -m tests.test_api
+      - run: python -m tests.test_cambio
