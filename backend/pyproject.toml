@@ -1,0 +1,18 @@
+[project]
+name = "meli-conversor-moeda"
+version = "0.2.0"
+description = "API do conversor de moeda"
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+preview = true
+select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+
+[tool.ruff.lint.per-file-ignores]
+'tests/*' = ['PLR2004']
+
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
